@@ -1,0 +1,6 @@
+[submodule "detectron2"]
+	path = detectron2
+	url = https://github.com/facebookresearch/detectron2.git
+[submodule "WSL/wsl/layers/csrc/crf/densecrf"]
+	path = WSL/wsl/layers/csrc/crf/densecrf
+	url = https://github.com/shenyunhang/densecrf.git

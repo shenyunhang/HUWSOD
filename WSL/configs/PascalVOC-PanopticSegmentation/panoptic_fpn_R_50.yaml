@@ -1,0 +1,28 @@
+_BASE_: "../../../../configs/COCO-PanopticSegmentation/Base-Panoptic-FPN.yaml"
+MODEL:
+  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl"
+  RESNETS:
+    DEPTH: 50
+  ROI_HEADS:
+    NUM_CLASSES: 20
+  SEM_SEG_HEAD:
+    NUM_CLASSES: 2
+INPUT:
+  MIN_SIZE_TRAIN: (480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800)
+  MIN_SIZE_TEST: 800
+DATASETS:
+  TRAIN: ("voc_2012_train_panoptic_separated", "sbd_9118_panoptic_separated")
+  TEST: ("voc_2012_val_panoptic_separated",)
+SOLVER:
+  #STEPS: (12000, 16000)
+  #MAX_ITER: 18000  # 17.4 epochs
+  #WARMUP_ITERS: 100
+  STEPS: (24000, 32000)
+  MAX_ITER: 36000  # 17.4 epochs
+  WARMUP_ITERS: 200
+  #IMS_PER_BATCH: 16
+  #BASE_LR: 0.02
+  IMS_PER_BATCH: 8
+  BASE_LR: 0.01
+TEST:
+  EVAL_PERIOD: 1000

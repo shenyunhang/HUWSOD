@@ -1,0 +1,20 @@
+_BASE_: "../../../../configs/Base-RCNN-FPN.yaml"
+MODEL:
+  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl"
+  MASK_ON: True
+  RESNETS:
+    DEPTH: 50
+DATASETS:
+  TRAIN: ("voc_2012_train_instance", "sbd_9118_instance")
+  PROPOSAL_FILES_TRAIN: ("datasets/proposals/mcg_voc_2012_train_instance_d2.pkl", "datasets/proposals/mcg_sbd_9118_instance_d2.pkl")
+  PRECOMPUTED_PROPOSAL_TOPK_TRAIN: 4000
+  TEST: ("voc_2012_val_instance",)
+  PROPOSAL_FILES_TEST: ("datasets/proposals/mcg_voc_2012_val_instance_d2.pkl", )
+  PRECOMPUTED_PROPOSAL_TOPK_TEST: 4000
+SOLVER:
+  STEPS: (12000, 16000)
+  MAX_ITER: 18000  # 17.4 epochs
+  WARMUP_ITERS: 200
+  REFERENCE_WORLD_SIZE: 8
+TEST:
+  EVAL_PERIOD: 5000

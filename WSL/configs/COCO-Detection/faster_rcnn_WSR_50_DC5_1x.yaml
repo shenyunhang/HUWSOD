@@ -1,0 +1,15 @@
+_BASE_: "../Base-RCNN-DilatedC5.yaml"
+MODEL:
+  WEIGHTS: "models/DRN-WSOD/resnet50_ws_model_120_d2.pkl"
+  PIXEL_MEAN: [102.9801, 115.9465, 122.7717]
+  MASK_ON: False
+  BACKBONE:
+    NAME: "build_wsl_resnet_backbone"
+  RESNETS:
+    DEPTH: 50
+  ROI_BOX_HEAD:
+    NAME: "DiscriminativeAdaptionNeck"
+    NUM_FC: 2
+    DAN_DIM: [2048, 4096]
+SOLVER:
+  IMS_PER_BATCH: 16

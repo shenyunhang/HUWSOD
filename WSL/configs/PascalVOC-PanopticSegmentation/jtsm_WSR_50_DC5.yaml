@@ -1,0 +1,45 @@
+_BASE_: "../PascalVOC-Detection/oicr_WSR_50_DC5.yaml"
+WSL:
+  OICR:
+    REFINE_NUM: 4
+    REFINE_REG: [True, True, True, True]
+  PS_ON: True
+  SP_ON: True
+MODEL:
+  META_ARCHITECTURE: "GeneralizedMCNN_WSL"
+  MASK_ON: True
+  SEM_SEG_HEAD:
+    NAME: "TwoClassHead"
+    IN_FEATURES: ["res5",]
+    NUM_CLASSES: 2
+  ROI_HEADS:
+    NAME: "JTSMROIHeads"
+  ROI_BOX_HEAD:
+    POOLER_TYPE: "MOIPool"
+  ROI_MASK_HEAD:
+    NAME: "MaskRCNNConvUpsampleWSLHead"
+    #NAME: "MaskRCNNConvUpsampleHead"
+  BACKBONE:
+    #NAME: "build_wsl_resnet_backbone"
+    NAME: "build_wsl_resnet_v2_backbone"
+    FREEZE_AT: 5
+SOLVER:
+  STEPS: (35000,)
+  MAX_ITER: 50000  # 20.0 epochs for 12
+  IMS_PER_BATCH: 4
+  BASE_LR: 0.01
+TEST:
+  EVAL_PERIOD: 1000
+  DETECTIONS_PER_IMAGE: 100
+  AUG:
+    ENABLED: True
+DATASETS:
+  #TRAIN: ("voc_2012_train_instance", "sbd_9118_instance")
+  TRAIN: ("voc_2012_train_panoptic_separated", "sbd_9118_panoptic_separated")
+  PROPOSAL_FILES_TRAIN: ("datasets/proposals/mcg_voc_2012_train_instance_segmentation_d2", "datasets/proposals/mcg_sbd_9118_instance_segmentation_d2")
+  PRECOMPUTED_PROPOSAL_TOPK_TRAIN: 4000
+  #TEST: ("voc_2012_val_instance",)
+  TEST: ("voc_2012_val_panoptic_separated",)
+  PROPOSAL_FILES_TEST: ("datasets/proposals/mcg_voc_2012_val_instance_segmentation_d2", )
+  PRECOMPUTED_PROPOSAL_TOPK_TEST: 4000
+VIS_PERIOD: 32

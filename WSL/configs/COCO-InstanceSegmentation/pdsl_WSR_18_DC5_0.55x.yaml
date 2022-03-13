@@ -1,0 +1,39 @@
+_BASE_: "../COCO-Detection/oicr_WSR_18_DC5_1x.yaml"
+WSL:
+  OICR:
+    REFINE_NUM: 4
+    REFINE_REG: [False, False, False, False]
+MODEL:
+  MASK_ON: True
+  ROI_HEADS:
+    NAME: "PDSLROIHeads"
+  ROI_MASK_HEAD:
+    NAME: "MaskRCNNConvUpsampleWSLHead"
+  BACKBONE:
+    NAME: "build_wsl_resnet_backbone"
+    #NAME: "build_mrrp_wsl_resnet_backbone"
+    FREEZE_AT: 5
+  MRRP:
+    MRRP_ON: False
+    NUM_BRANCH: 3
+    BRANCH_DILATIONS: [1, 2, 3]
+    TEST_BRANCH_IDX: -1
+    MRRP_STAGE: "res5"
+SOLVER:
+  STEPS: (140000, 200000)
+  MAX_ITER: 240000
+  IMS_PER_BATCH: 4
+  BASE_LR: 0.01
+TEST:
+  EVAL_PERIOD: 1000
+  DETECTIONS_PER_IMAGE: 100
+  AUG:
+    ENABLED: True
+DATASETS:
+  TRAIN: ("coco_2014_train", "coco_2014_valminusminival")
+  PROPOSAL_FILES_TRAIN: ("datasets/proposals/mcg_coco_2014_train_d2.pkl", "datasets/proposals/mcg_coco_2014_valminusminival_d2.pkl")
+  PRECOMPUTED_PROPOSAL_TOPK_TRAIN: 4000
+  TEST: ("coco_2014_minival",)
+  PROPOSAL_FILES_TEST: ("datasets/proposals/mcg_coco_2014_minival_d2.pkl", )
+  PRECOMPUTED_PROPOSAL_TOPK_TEST: 4000
+VIS_PERIOD: 256

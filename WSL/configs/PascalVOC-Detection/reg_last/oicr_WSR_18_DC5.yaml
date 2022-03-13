@@ -1,0 +1,7 @@
+_BASE_: "../oicr_WSR_18_DC5.yaml"
+WSL:
+  OICR:
+    REFINE_NUM: 4
+    REFINE_REG: [False, False, False, True]
+TEST:
+  EVAL_PERIOD: 10000

@@ -1,0 +1,37 @@
+_BASE_: "../../../../configs/Base-RCNN-DilatedC5.yaml"
+MODEL:
+  WEIGHTS: "models/DRN-WSOD/resnet50_ws_model_120_d2.pkl"
+  PIXEL_MEAN: [102.9801, 115.9465, 122.7717]
+  MASK_ON: False
+  BACKBONE:
+    NAME: "build_wsl_resnet_backbone"
+  RESNETS:
+    DEPTH: 50
+  ROI_HEADS:
+    NUM_CLASSES: 20
+  ROI_BOX_HEAD:
+    NAME: "DiscriminativeAdaptionNeck"
+    NUM_CONV: 0
+    NUM_FC: 2
+    DAN_DIM: [2048, 4096]
+INPUT:
+  MIN_SIZE_TRAIN: (480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800)
+  MIN_SIZE_TEST: 800
+DATASETS:
+  #TRAIN: ("voc_2007_train", "voc_2007_val")
+  TRAIN: ("voc_2007_trainval", "voc_2012_trainval")
+  TEST: ("voc_2007_test",)
+SOLVER:
+  STEPS: (12000, 16000)
+  MAX_ITER: 18000  # 17.4 epochs
+  WARMUP_ITERS: 100
+  REFERENCE_WORLD_SIZE: 8
+  BASE_LR: 0.02
+  WEIGHT_DECAY: 0.0005
+  BIAS_LR_FACTOR: 2.0
+  WEIGHT_DECAY_BIAS: 0.0
+  CLIP_GRADIENTS:
+    ENABLED: True
+    CLIP_TYPE: "norm"
+TEST:
+  EVAL_PERIOD: 5000

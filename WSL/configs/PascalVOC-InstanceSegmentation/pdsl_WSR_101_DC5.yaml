@@ -1,0 +1,37 @@
+_BASE_: "../PascalVOC-Detection/oicr_WSR_101_DC5.yaml"
+WSL:
+  OICR:
+    REFINE_NUM: 4
+    REFINE_REG: [True, True, True, True]
+MODEL:
+  MASK_ON: True
+  ROI_HEADS:
+    NAME: "PDSLROIHeads"
+  BACKBONE:
+    NAME: "build_wsl_resnet_backbone"
+    #NAME: "build_mrrp_wsl_resnet_backbone"
+    FREEZE_AT: 5
+  MRRP:
+    MRRP_ON: False
+    NUM_BRANCH: 3
+    BRANCH_DILATIONS: [1, 2, 3]
+    TEST_BRANCH_IDX: -1
+    MRRP_STAGE: "res5"
+SOLVER:
+  STEPS: (35000,)
+  MAX_ITER: 50000  # 20.0 epochs for 12
+  IMS_PER_BATCH: 4
+  BASE_LR: 0.01
+TEST:
+  EVAL_PERIOD: 5000
+  DETECTIONS_PER_IMAGE: 100
+  AUG:
+    ENABLED: True
+DATASETS:
+  TRAIN: ("voc_2012_train_instance", "sbd_9118_instance")
+  PROPOSAL_FILES_TRAIN: ("datasets/proposals/mcg_voc_2012_train_instance_d2.pkl", "datasets/proposals/mcg_sbd_9118_instance_d2.pkl")
+  PRECOMPUTED_PROPOSAL_TOPK_TRAIN: 4000
+  TEST: ("voc_2012_val_instance",)
+  PROPOSAL_FILES_TEST: ("datasets/proposals/mcg_voc_2012_val_instance_d2.pkl", )
+  PRECOMPUTED_PROPOSAL_TOPK_TEST: 4000
+VIS_PERIOD: 256

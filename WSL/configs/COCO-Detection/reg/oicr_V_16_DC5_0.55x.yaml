@@ -1,0 +1,5 @@
+_BASE_: "../oicr_V_16_DC5_0.55x.yaml"
+WSL:
+  OICR:
+    REFINE_NUM: 4
+    REFINE_REG: [False, False, False, True]
