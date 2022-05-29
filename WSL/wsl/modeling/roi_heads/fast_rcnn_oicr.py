@@ -421,12 +421,12 @@ class OICROutputLayers(nn.Module):
         else:
             proposal_boxes = gt_boxes = torch.empty((0, 4), device=proposal_deltas.device)
 
-        if self.cross_entropy_weighted or self.box_reg_loss_type == "smooth_l1_weighted":
-            self.proposal_weights = torch.cat([p.gt_weights for p in proposals], dim=0)
-            self.proposal_weights[gt_classes == -1] = 0.0
+        # if self.cross_entropy_weighted or self.box_reg_loss_type == "smooth_l1_weighted":
+        self.proposal_weights = torch.cat([p.gt_weights for p in proposals], dim=0)
+        self.proposal_weights[gt_classes == -1] = 0.0
 
-            self.valid_weights = torch.zeros_like(self.proposal_weights)
-            self.valid_weights[self.proposal_weights > 1e-12] = 1.0
+        self.valid_weights = torch.zeros_like(self.proposal_weights)
+        self.valid_weights[self.proposal_weights > 1e-12] = 1.0
 
         if self.use_sigmoid_ce:
             loss_cls = self.sigmoid_cross_entropy_loss(scores, gt_classes)
@@ -604,12 +604,12 @@ class OICROutputLayers(nn.Module):
         else:
             proposal_boxes = gt_boxes = torch.empty((0, 4), device=proposal_deltas.device)
 
-        if self.cross_entropy_weighted or self.box_reg_loss_type == "smooth_l1_weighted":
-            self.proposal_weights = torch.cat([p.gt_weights for p in proposals], dim=0)
-            self.proposal_weights[gt_classes == -1] = 0.0
+        # if self.cross_entropy_weighted or self.box_reg_loss_type == "smooth_l1_weighted":
+        self.proposal_weights = torch.cat([p.gt_weights for p in proposals], dim=0)
+        self.proposal_weights[gt_classes == -1] = 0.0
 
-            self.valid_weights = torch.zeros_like(self.proposal_weights)
-            self.valid_weights[self.proposal_weights > 1e-12] = 1.0
+        self.valid_weights = torch.zeros_like(self.proposal_weights)
+        self.valid_weights[self.proposal_weights > 1e-12] = 1.0
 
         if not self.refine_reg:
             losses = {
